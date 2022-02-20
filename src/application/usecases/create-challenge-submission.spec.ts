@@ -71,4 +71,38 @@ describe("CreateChallengeSubmission use case", () => {
       new Error("Student does not exists.")
     );
   });
+
+  it("Should be able to trhow error if challenge ID is incorrect", async () => {
+    const studentsRepository = new InMemoryStudentsRepository();
+    const challengesRepository = new InMemoryChallengesRepository();
+
+    const student = Student.create({
+      name: "fake-student-name",
+      email: "fake-student@email.com",
+    });
+
+    const challenge = Challenge.create({
+      title: "fake-challenge-title",
+      instructionsUrl: "fake-challenge-instructions-url",
+    });
+
+    await studentsRepository.addNewStudent(student);
+    await challengesRepository.addNewChallenge(challenge);
+
+    const sut = new CreateChallengeSubmission(
+      studentsRepository,
+      challengesRepository
+    );
+
+    const data = {
+      studentId: student.id,
+      challengeId: "fake-invalid-challenge-id",
+    };
+
+    //const response = await sut.execute(data);
+
+    expect(sut.execute(data)).rejects.toEqual(
+      new Error("Challenge does not exists.")
+    );
+  });
 });
