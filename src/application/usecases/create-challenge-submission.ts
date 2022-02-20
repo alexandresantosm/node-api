@@ -1,4 +1,5 @@
 import { Submission } from "../../domain/entities/submission";
+import { ChallengesRepository } from "../repositories/ChallengesRepository";
 import { StudentsRepository } from "../repositories/StudentsRepository";
 
 type CreateChallengeSubmissionRequest = {
@@ -7,7 +8,10 @@ type CreateChallengeSubmissionRequest = {
 };
 
 export class CreateChallengeSubmission {
-  constructor(private readonly studentsRepository: StudentsRepository) {}
+  constructor(
+    private readonly studentsRepository: StudentsRepository,
+    private readonly challengesRepository: ChallengesRepository
+  ) {}
 
   execute = async ({
     studentId,
@@ -17,6 +21,12 @@ export class CreateChallengeSubmission {
 
     if (!student) {
       throw new Error("Students does not exists.");
+    }
+
+    const challenge = await this.challengesRepository.findById(challengeId);
+
+    if (!challenge) {
+      throw new Error("Challenges does not exists.");
     }
 
     const submission = Submission.create({
