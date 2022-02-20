@@ -6,7 +6,10 @@ type CreateChallengeSubmissionRequest = {
 };
 
 export class CreateChallengeSubmission {
-  execute = ({ studentId, challengeId }: CreateChallengeSubmissionRequest) => {
+  execute = async ({
+    studentId,
+    challengeId,
+  }: CreateChallengeSubmissionRequest) => {
     const submission = Submission.create({
       studentId,
       challengeId,
