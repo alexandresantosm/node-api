@@ -8,4 +8,8 @@ export abstract class Entity<T> {
     this._id = id ?? crypto.randomUUID();
     this.props = props;
   }
+
+  get id() {
+    return this._id;
+  }
 }
