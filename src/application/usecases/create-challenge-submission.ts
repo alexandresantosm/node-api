@@ -20,13 +20,13 @@ export class CreateChallengeSubmission {
     const student = await this.studentsRepository.findById(studentId);
 
     if (!student) {
-      throw new Error("Students does not exists.");
+      throw new Error("Student does not exists.");
     }
 
     const challenge = await this.challengesRepository.findById(challengeId);
 
     if (!challenge) {
-      throw new Error("Challenges does not exists.");
+      throw new Error("Challenge does not exists.");
     }
 
     const submission = Submission.create({
